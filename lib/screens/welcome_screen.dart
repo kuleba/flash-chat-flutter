@@ -1,3 +1,4 @@
+import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/screens/login_screen.dart';
 import 'package:flash_chat/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
@@ -76,58 +77,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
             SizedBox(
               height: 48.0,
             ),
-            RoundedButton(),
-            RoundedButton(),
-            // Padding(
-            //   padding: EdgeInsets.symmetric(vertical: 16.0),
-            //   child: Material(
-            //     color: Colors.blueAccent,
-            //     borderRadius: BorderRadius.circular(30.0),
-            //     elevation: 5.0,
-            //     child: MaterialButton(
-            //       onPressed: () {
-            //         Navigator.pushNamed(context, RegistrationScreen.id);
-            //         //Go to registration screen.
-            //       },
-            //       minWidth: 200.0,
-            //       height: 42.0,
-            //       child: Text(
-            //         'Register',
-            //       ),
-            //     ),
-            //   ),
-            // ),
+            RoundedButton(
+                color: Colors.lightBlueAccent,
+                text: 'Log In',
+                onPress: () {
+                  Navigator.pushNamed(context, LoginScreen.id);
+                }),
+            RoundedButton(
+              text: 'Register',
+              color: Colors.blueAccent,
+              onPress: () {
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },
+            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class RoundedButton extends StatelessWidget {
-  final Color color;
-  final String text;
-  final Function onPress;
-  RoundedButton ({required this.color, required this.text, required this.onPress})
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: Material(
-        elevation: 5.0,
-        color: color,
-        borderRadius: BorderRadius.circular(30.0),
-        child: MaterialButton(
-          onPressed: () {
-            onPress();
-          },
-          minWidth: 200.0,
-          height: 42.0,
-          child: Text(
-            text,
-          ),
         ),
       ),
     );
