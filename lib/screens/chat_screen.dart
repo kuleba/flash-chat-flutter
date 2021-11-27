@@ -95,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: ()  {
                       messageTextController.clear();
                        _firestore.collection('messages').add(
-                          {'text': messageText, 'sender': loggedInUser.email});
+                          {'timestamp': FieldValue.serverTimestamp(),'text': messageText, 'sender': loggedInUser.email});
                       //Implement send functionality.
                     },
                     child: Text(
@@ -120,7 +120,7 @@ class MessagesStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('messages').snapshots(),
+      stream: _firestore.collection('messages').orderBy('timestamp').snapshots(),
       builder: (context, snapshot) {
         List<MessageBubble> messageBubbles = [];
         if (!snapshot.hasData) {
@@ -128,7 +128,7 @@ class MessagesStream extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final messages = snapshot.data!.docs;
+        final messages = snapshot.data!.docs.reversed;
 
         for (var message in messages) {
           final messageText = message.get('text');
@@ -140,6 +140,7 @@ class MessagesStream extends StatelessWidget {
 
         return Expanded(
           child: ListView(
+            reverse: true,
             padding: EdgeInsets.symmetric(horizontal: 10,vertical: 20),
             children: messageBubbles,
           ),
@@ -164,14 +165,14 @@ class MessageBubble extends StatelessWidget {
         children: [
           Text(messageSender, style: TextStyle(fontSize: 12, color: Colors.black54),),
           Material(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: (messageSender==loggedInUser.email) ?  BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30), topRight:Radius.circular(30)) : BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30), topLeft: Radius.circular(30)),
             elevation: 6,
-            color: Colors.lightBlueAccent,
+            color: (messageSender==loggedInUser.email) ? Colors.lightBlueAccent : Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
               child: Text(messageText,
 
-                style: TextStyle(fontSize: 20 ,color: Colors.white),),
+                style: TextStyle(fontSize: 20 ,color: (messageSender==loggedInUser.email)?Colors.white:Colors.black54),),
             ),
           ),
         ],
