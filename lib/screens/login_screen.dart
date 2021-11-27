@@ -26,74 +26,71 @@ class _LoginScreenState extends State<LoginScreen> {
         inAsyncCall: showSpiner,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                SizedBox(
-                  height: 64.0,
-                ),
-                Hero(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Flexible(
+                child: Hero(
                   tag: 'logo',
                   child: Container(
                     height: 200.0,
                     child: Image.asset('images/logo.png'),
                   ),
                 ),
-                SizedBox(
-                  height: 48.0,
-                ),
-                TextField(
-                    style: TextStyle(color: Colors.black),
-                    keyboardType: TextInputType.emailAddress,
-                    textAlign: TextAlign.center,
-                    onChanged: (value) {
-                      email = value;
-                      //Do something with the user input.
-                    },
-                    decoration:
-                        textInputDecor.copyWith(hintText: 'Enter your email')),
-                SizedBox(
-                  height: 8.0,
-                ),
-                TextField(
-                    style: TextStyle(
-                      color: Colors.black,
-                    ),
-                    textAlign: TextAlign.center,
-                    obscureText: true,
-                    onChanged: (value) {
-                      password = value;
-                      //Do something with the user input.
-                    },
-                    decoration: textInputDecor),
-                SizedBox(
-                  height: 24.0,
-                ),
-                RoundedButton(
-                  color: Colors.lightBlueAccent,
-                  text: 'Log In',
-                  onPress: () async {
-                    setState(() {
-                      showSpiner = true;
-                    });
-                    try {
-                      final user = await _auth.signInWithEmailAndPassword(
-                          email: email, password: password);
-                      if (user != null) {
-                        Navigator.pushNamed(context, ChatScreen.id);
-                      }
-                      setState(() {
-                        showSpiner = false;
-                      });
-                    } on Exception catch (e) {
-                      print(e);
-                    }
+              ),
+              SizedBox(
+                height: 48.0,
+              ),
+              TextField(
+                  style: TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) {
+                    email = value;
+                    //Do something with the user input.
                   },
-                )
-              ],
-            ),
+                  decoration:
+                      textInputDecor.copyWith(hintText: 'Enter your email')),
+              SizedBox(
+                height: 8.0,
+              ),
+              TextField(
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                  obscureText: true,
+                  onChanged: (value) {
+                    password = value;
+                    //Do something with the user input.
+                  },
+                  decoration: textInputDecor),
+              SizedBox(
+                height: 24.0,
+              ),
+              RoundedButton(
+                color: Colors.lightBlueAccent,
+                text: 'Log In',
+                onPress: () async {
+                  setState(() {
+                    showSpiner = true;
+                  });
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    if (user != null) {
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }
+                    setState(() {
+                      showSpiner = false;
+                    });
+                  } on Exception catch (e) {
+                    print(e);
+                  }
+                },
+              )
+            ],
           ),
         ),
       ),
